@@ -8,15 +8,13 @@ chrome.app.runtime.onLaunched.addListener(function() {
       }
     });
     chrome.serial.getDevices(function deviceList(foundPorts) {
+        console.log("Ports list");
+        console.log(foundPorts);
         foundPorts.forEach(port => {
             if (port.path == "/dev/cu.usbmodem1412")
             {
                 correctPort = port;
             }
         });
-
-
     });
-
-
-  });
+});
