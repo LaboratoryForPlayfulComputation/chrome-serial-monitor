@@ -3,10 +3,24 @@ var portPath;
 var stringReceived = '';
 var decoder = new TextDecoder("utf-8");
 
-console.log("here");
+chrome.serial.getDevices(function deviceList(foundPorts) {
+    console.log("Ports list");
+    console.log(foundPorts);
+    foundPorts.forEach(port => {
+        if (port.path == "/dev/cu.usbmodem1412") {
+            correctPort = port;
+            portPath = port.path;
+            chrome.serial.connect(portPath, {bitrate: 115200, persistent: true}, function() {
+                console.log("connected");
+            });
+        };
+    });
+});
 
 var onLineReceived = function(str) {
     console.log(str);
+    var paragraph = document.getElementById("serial-out");
+    paragraph.textContent += str;
 }
 
 var onReceiveCallback = function(info) {
@@ -21,23 +35,6 @@ var onReceiveCallback = function(info) {
       stringReceived += str;
     }
 };
-
-    
-chrome.serial.getDevices(function deviceList(foundPorts) {
-        console.log("Ports list");
-        console.log(foundPorts);
-        foundPorts.forEach(port => {
-            if (port.path == "/dev/cu.usbmodem1412")
-            {
-                correctPort = port;
-                portPath = port.path;
-                chrome.serial.connect(portPath, {bitrate: 115200, persistent: true}, function() {
-                    console.log("connected");
-            });
-        }
-    });
-});
-
 
 chrome.serial.onReceive.addListener(onReceiveCallback);
 
