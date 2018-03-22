@@ -1,7 +1,7 @@
 {
-    "name": "Hello World!",
-    "description": "My first Chrome App.",
-    "version": "0.1",
+    "name": "chrome serial collector",
+    "description": "Collects serial data",
+    "version": "0.2",
     "manifest_version": 2,
     "permissions": ["serial"],
     "app": {

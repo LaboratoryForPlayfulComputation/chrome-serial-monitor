@@ -29,13 +29,11 @@ window.onload = function() {
     
     
     var onLineReceived = function(str) {
-        console.log(str);
         var paragraph = document.getElementById("serial-out");
         paragraph.textContent += str;
     }
     
     var onReceiveCallback = function(info) {
-        
         var str = decoder.decode(info.data);
         if (str.charAt(str.length-1) === '\n') {
           stringReceived += str.substring(0, str.length-1);
