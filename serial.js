@@ -8,7 +8,7 @@ window.onload = function() {
         console.log("Ports list");
         console.log(foundPorts);
         foundPorts.forEach(port => {
-            if (port.path == "/dev/cu.usbmodem1412") {
+            if (port.path == "/dev/ttyAMC0") {
                 correctPort = port;
                 portPath = port.path;
                 chrome.serial.connect(portPath, {bitrate: 115200, persistent: true}, function() {
