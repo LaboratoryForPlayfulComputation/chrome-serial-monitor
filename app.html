@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+<style>
+.line {
+  fill: none;
+  stroke: #ff0000;
+  stroke-width: 2px;
+}
+html{
+  overflow-y: auto;
+}
+</style>
+<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+<h1>SparkFun Micro:bit Serial Monitor<span class="glyphicon glyphicon-briefcase" aria-hidden="false"></span></h1>
+<p>Welcome to the SparkFun micro:bit tool. It is part of a much larger tool set for working with the micro:bit in interesting ways.</p>
+<div class="jumbotron">
+  <div>
+<h3>Connect to Serial Port...</h3>
+<p><b>Micro:bit Connected to computer?...</b><span id="bit?"></span></p>
+</div>
+<div class="row">
+  <div class"col-md-6">
+<div class="form-group">
+  <label for="sel1">Select Serial Port:</label>
+  <select class="form-control" id="sel1">
+  </select>
+</div>
+</div>
+<div class="col-md-5">
+  <label for="sel2">Select a Baud Rate:</label>
+  <select class="form-control" id="sel2">
+    <option value="110">110</option>
+    <option value="150">150</option>
+    <option value="300">300</option>
+    <option value="1200">1200</option>
+    <option value="2400">2400</option>
+    <option value="4800">4800</option>
+    <option value="9600">9600</option>
+    <option value="19200">19200</option>
+    <option value="38400">38400</option>
+    <option value="57600">57600</option>
+    <option value="115200">115200</option>
+
+  </select>
+</div>
+<div class="col-md-1">
+  <br>
+<button type="button" class="btn btn-primary" id="connect">Connect</button><span id="connection?"></span>
+</div>
+</div>
+</div>
+
+<h3> Serial Monitor </h3>
+
+    <p> The single variable viewer is designed for you to be able to quickly work with a
+      single number variable coming over the serial port of your micro:bit. This number will
+      be streamed as a list in the <b>Raw Stream </b> view as well as in the form of a line
+      graph over time. For example code to install on your micro:bit, see the Code Example section
+      of this tool!
+    </p>
+    <div class="row">
+      <div class="col-md-3">
+    <h3>Raw Stream</h3>
+    <br>
+    <textarea readonly rows="12" cols="25" id="serial-out"></textarea>
+    <button type="button" class="btn btn-primary" id="copy">Copy Data to Clipboard</button>
+     </div>
+     <div class="col-md-7">
+    <h3>Data Over Time</h3>
+    <br>
+    <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+    </div>
+    </div>
+    <h3>Code Example</h3>
+    <p>Here is a quick code example using Microsoft MakeCode for you to get up and running!</p>
+    <img src="#">
+  </div>
+
+
+<script src="app.js"></script>
+<script src="node_modules/jquery/dist/jquery.min.js"></script>
+<script src="node_modules/canvasjs-2/canvasjs.min.js"></script>
+<script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
+
+</body>
