@@ -135,6 +135,7 @@ chrome.system.storage.onDetached.addListener(function(info){
   });
 
   var onLineReceived = function(str) {
+      
       var paragraph = document.getElementById("serial-out");
       inDat = Number(str.substring(0, str.length-1));
 
@@ -161,7 +162,7 @@ chrome.system.storage.onDetached.addListener(function(info){
 
   var onReceiveCallback = function(info) {
       var str = decoder.decode(info.data);
-
+      
       if (str.charAt(str.length-1) === '\n') {
         stringReceived += str.substring(0, str.length-1);
         onLineReceived(stringReceived);
