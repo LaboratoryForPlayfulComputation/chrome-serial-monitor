@@ -67,10 +67,23 @@ html{
     <div class="row">
       <div class="col-md-3">
     <h3>Raw Stream</h3>
-    <br>
+   <!-- <br>-->
+   <div class="checkbox">
+    <label><input id="include_x" type="checkbox" value="">Include X-Values</label>
+  </div>
+  <!--<div class="checkbox">
+    <label><input type="checkbox" value="">Option 2</label>
+  </div>
+  <div class="checkbox disabled">
+    <label><input type="checkbox" value="" disabled>Option 3</label>
+  </div>-->
+    
     <textarea readonly rows="12" cols="25" id="serial-out"></textarea>
-    <button type="button" class="btn btn-primary" id="copy">Copy Data to Clipboard</button>
-     </div>
+    <div class="btn-group" >
+    <button type="button" class="btn btn-info" id="copy">Copy Data <!--to Clipboard--></button>
+  <button type="button"  class="btn btn-success" id="download">Download Data </button>
+</div>  
+</div>
      <div class="col-md-7">
     <h3>Data Over Time</h3>
     <br>
