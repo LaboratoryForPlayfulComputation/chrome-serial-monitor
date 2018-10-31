@@ -12,6 +12,41 @@ window.onload = function() {
   var updateInterval = 1000;
   var dataLength = 20; // number of dataPoints visible at any point
 
+  var dps = [{type:"line",showInLegend:false,name:"",dataPoints:[]}]; // dataPoints
+  //var dps = [{type:"line",showInLegend:true,name:"Apples",dataPoints:[{x:1,y:2},{x:2,y:3},{x:3,y:4}]}]//,
+  //{type:"line",showInLegend:true,name:"Oranges",dataPoints:[{x:1,y:3,x:2,y:4,x:3,y:5}]}]; 
+var chart = new CanvasJS.Chart("chartContainer", {
+  animationEnabled: true,
+  title :{
+    text: "Reading Micro:bit Data"
+  },
+  axisY: {
+    includeZero: false
+  },
+  legend: {
+		cursor:"pointer",
+		//verticalAlign: "top",
+		fontSize: 16,
+		//fontColor: "dimGrey",
+		itemclick : toggleDataSeries
+	},
+  data: dps 
+});
+
+//chart.render()
+
+console.log("canvas loaded: "+CanvasJS)
+
+function toggleDataSeries(e){
+	if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+		e.dataSeries.visible = false;
+	}
+	else{
+		e.dataSeries.visible = true;
+	}
+	chart.render();
+}
+
   chrome.system.storage.getInfo(function(info){
       console.log(info);
       if(info[0].name == "MICROBIT" && info[0].type == "removable"){
@@ -152,82 +187,85 @@ downloadButton.addEventListener("click", function(event) {
 });
 
 var onLineReceived = function(str) {
+
+  var data = ""
     
     var paragraph = document.getElementById("serial-out");
     inDats = str.split(',');
     for(var i =0;i<inDats.length;i++){
       console.log("inDats:"+ inDats[i])
     }
-    //console.log("inDats: "+inDats);
+   
     console.log("length indats: "+inDats.length)
-    /*inDat1 = Number(inDats[0])
-    inDat2 = Number (inDats[1])
-    console.log("One: "+inDat1)
-    console.log("Two: "+inDat2)*/
-    //inDat = Number(str.substring(0, str.length-1));
-
-    //dataLength = dataLength || 1;
-    
-    //console.log("points: "+dataLength);
-    //for (var j = 0; j < dataLength; j++) {
+   
+    if (isNaN(inDats[0])){ //in label section
+      console.log("in labels")
+      for (var i=0;i<inDats.length;i++) {
+        console.log("label: "+ inDats[i].trim())
+        if(dps[i]===undefined){
+          console.log("adding new series");
+      //chart.options.data.push({type:"line",showInLegend:true,name:"series"+(i+1),legendText:inDats[i].trim(),dataPoints:[]})
+      chart.options.data.push({type:"line",showInLegend:true,name:inDats[i].trim(),dataPoints:[]})
+   
+        }
+        else {
+          dps[i].showInLegend = true;
+          //dps[i]["name"]="series"+(i+1);
+          //dps[i]["legendText"]=
+          dps[i].name=inDats[i].trim();
+       
+        }
+      }
+    }
+    else {
+      console.log("in data")
       for (var k=0;k < inDats.length;k++) {
-        yVal = Number(inDats[k]);
+        yVal = parseFloat(inDats[k]).toFixed(2);
+        data = data+yVal+","
         console.log("yVal: "+yVal)
         if(dps[k] === undefined){//dynamically add additional series
+          console.log("adding new series");
           chart.options.data.push({type:"line",dataPoints:[]});
-          //console.log("in undefined")
-          //dps[k]=[{x:xVal,y:yVal}]
-          //console.log("added: "+dps[k])
         }
-       /* else if(dps[k].length==0) {
-          dps[k]={type:"line",dataPoints:[]}
-
-        }*/
-
-        //else {
         dps[k].dataPoints.push({
           x: xVal,
-          y: yVal
+          y: Number(yVal)
       });
-    //}
+   
     }
-      
-      
-  
-    
  
       for (var m=0;m<inDats.length;m++){
         if (dps[m].dataPoints.length > dataLength) {
           dps[m].dataPoints.shift();
         }
       }
-   
 
-    
-/*
-    console.log(test[0].type);
-    console.log(test[1].type);
-    console.log(test[0].dataPoints[0].y);
-    console.log(test[1].dataPoints[0].y);
-    console.log(test[0].dataPoints[0].x);
-    console.log(test[1].dataPoints[0].x);*/
-
-
-   
-
-  
-    
+      for (var z=0;z<dps.length;z++){
+        console.log("to print:")
+        console.log(dps[z])
+      }
       
-    //chart.update();
-    chart.render();
+      chart.render();
+    }
+  
     var box = document.getElementById("include_x");
     if(box.checked == true){
-      paragraph.textContent += xVal+','+str;
+      if(isNaN(inDats[0])){
+        paragraph.textContent += "Sample, "+str;
+      }
+      else {
+      paragraph.textContent += xVal+','+data.slice(0,-1)+"\n";
+      }
       paragraph.scrollTop = paragraph.scrollHeight;
     }
-    else{
-      paragraph.textContent += str;
+    else {
+      if(isNaN(inDats[0])){
+        paragraph.textContent += str;
+      }
+      else {
+      paragraph.textContent += data.slice(0,-1)+"\n";
       paragraph.scrollTop = paragraph.scrollHeight;
+      }
 
     }
 
@@ -252,31 +290,5 @@ var onReceiveCallback = function(info) {
 
 chrome.serial.onReceive.addListener(onReceiveCallback);
 
-
-var dps = [{type:"line",dataPoints:[]}]; // dataPoints
-//[[{x1,y1},{x2,y2}],[{x1,z1},{x2,z2}]]
-//var dps1 = []
-var chart = new CanvasJS.Chart("chartContainer", {
-  title :{
-    text: ""
-  },
-  axisY: {
-    includeZero: false
-  },
-  data: dps 
-  /*data: dps.map(function(d) {
-    return {type:"line",dataPoints:d}
-  })*/
-  
-  /*data:[
-    {
-    type: "line",
-    dataPoints: dps[0]//[{x:1,y:17}]//,{x:2,y:18}]
-  },
- {
-    type: "line",
-    dataPoints: dps[1]//[{x:1,y:19}]//,{x:2,y:20}]
- }]*/
-});
 
 }
