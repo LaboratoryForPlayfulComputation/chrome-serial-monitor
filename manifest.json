@@ -2,7 +2,7 @@
   "name": "Serial Monitor",
   "description": "Tool for viewing and collecting Serial Data coming from a micro:bit",
   "manifest_version": 2,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "minimum_chrome_version": "23",
   "permissions": ["serial","system.storage"],
   "app": {
